@@ -40,10 +40,16 @@ class Game:
 
     def bounce_on_rect(self, rect):
         overlap = self.ball.rectangle.clip(rect)
-        if overlap.top == rect.top or overlap.bottom == rect.bottom:
+
+        if overlap.width >= overlap.height:
             self.ball.bounce("horizontal")
-        if overlap.left == rect.left or overlap.right == rect.right:
+        if overlap.width <= overlap.height:
             self.ball.bounce("vertical")
+
+        # if overlap.top == rect.top or overlap.bottom == rect.bottom:
+        #     self.ball.bounce("horizontal")
+        # if overlap.left == rect.left or overlap.right == rect.right:
+        #     self.ball.bounce("vertical")
 
 
     def collide_list_of_bricks(self):
