@@ -50,3 +50,7 @@ class Ball:
         self.center_x = math.cos(self.angle) * self.velocity + self.center_x
         self.center_y = math.sin(self.angle) * self.velocity + self.center_y
 
+    
+    def move_back(self):
+        self.center_x, self.center_y = self.save_pos
+
