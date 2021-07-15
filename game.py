@@ -18,8 +18,8 @@ class Game:
     def __init__(self):
         self.stop_game = False
 
-        self.screen = pygame.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
-        self.bkg = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_WIDTH)
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.bkg = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
         self.player = Player()
         self.ball = Ball()
@@ -50,7 +50,7 @@ class Game:
 
     def collide_screen(self):
         rep = False
-        bounds = self.surface.get_rect()
+        bounds = self.screen.get_rect()
         if self.ball.rectangle.left < bounds.left or self.ball.rectangle.right > bounds.right:
             self.ball.bounce("Vertical")
             rep = True
@@ -70,18 +70,18 @@ class Game:
     def end_game(self):
         pygame.font.init()
         font = pygame.font.SysFont(pygame.font.get_default_font(), FONT_SIZE)
-        text= self.font.render(f'Game Over', False, (255, 255, 255))
-        self.surface.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,PLAYER_GAP))
+        text= font.render('Game Over', False, (255, 255, 255))
+        self.screen.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,PLAYER_GAP))
         self.stop_game = True
 
     def check_collision(self):
         had_collision = False
-        had_collision = collide_screen()
-        indices = collide_list_of_bricks()
+        had_collision = self.collide_screen()
+        indices = self.collide_list_of_bricks()
         for i in indices:
             del(self.bricks[i])
             had_collision = True
-        had_collision &= collide_player()
+        had_collision = had_collision and self.collide_player()
         if had_collision:
             self.ball.move_back()
 
