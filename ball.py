@@ -22,7 +22,7 @@ class Ball:
         self.center_x = BALL_START_X
         self.center_y = BALL_START_Y
         self.velocity = BALL_SPEED
-        self.angle = math.pi / 2
+        self.angle = - math.pi / 2
         self.rectangle = pygame.Rect(self.center_x - self.radius, self.center_y - self.radius, 2 * self.radius, 2 * self.radius)
         self.color = "white"
         self.save_pos = (self.center_x, self.center_y)
