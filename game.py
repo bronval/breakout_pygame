@@ -15,8 +15,8 @@ from player import Player
 from ball import Ball
 from brick import Brick
 import sound
-
 from math import pi
+
 
 class Game:
 
@@ -36,6 +36,8 @@ class Game:
                 
         pygame.font.init()
         self.font = pygame.font.SysFont(pygame.font.get_default_font(), FONT_SIZE)
+
+        self.victory = False
 
 
     def bounce_on_rect(self, rect):
@@ -89,6 +91,11 @@ class Game:
         indices = self.collide_list_of_bricks()
         for i, idx in enumerate(indices):
             del(self.bricks[idx-i])
+
+        if len(self.bricks) == 0:
+            self.victory == True
+            self.stop_game = True
+
         self.collide_player()
 
     
@@ -121,9 +128,17 @@ class Game:
             self.check_collision()
             self.draw()
         
-        text= self.font.render('Game Over', False, (255, 255, 255))
-        self.screen.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,(SCREEN_HEIGHT-text.get_rect().height)/2))
-        pygame.display.flip()
+        if self.victory:
+            text = self.font.render("VICTORY", False, "yellow")
+            self.screen.blit(text, ((SCREEN_WIDTH-text.get_rect().width)/2,(SCREEN_HEIGHT-text.get_rect().height)/2))
+            pygame.display.flip()
+            sound.victory()
+
+        else: 
+            text= self.font.render('Game Over', False, (255, 255, 255))
+            self.screen.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,(SCREEN_HEIGHT-text.get_rect().height)/2))
+            pygame.display.flip()
+            sound.death()
 
         while not self.check_quit():
             pass
