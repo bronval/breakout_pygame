@@ -99,7 +99,7 @@ class Game:
             del(self.bricks[idx-i])
 
         if len(self.bricks) == 0:
-            self.victory == True
+            self.victory = True
             self.stop_game = True
 
         self.collide_player()
