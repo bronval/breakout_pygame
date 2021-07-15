@@ -68,26 +68,20 @@ class Game:
         if self.ball.rectangle.top <= bounds.top:
             self.ball.bounce("horizontal")
             self.ball.move_back()
-        if self.ball.rectangle.bottom >= bounds.bottom:
+        if self.ball.rectangle.top >= bounds.bottom:
             pygame.time.wait(TIME_BEFORE_RELAUNCH)
             self.player.life -= 1
-            if self.player.life == 0:
-                self.end_game()
+            if self.player.life <= 0:
+                self.stop_game = True
                 return
             self.ball = Ball()
-
-
-    def end_game(self):
-        text= self.font.render('Game Over', False, (255, 255, 255))
-        self.screen.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,PLAYER_GAP))
-        self.stop_game = True
 
 
     def check_collision(self):
         self.collide_screen()
         indices = self.collide_list_of_bricks()
-        for i in indices:
-            del(self.bricks[i])
+        for i, idx in enumerate(indices):
+            del(self.bricks[idx-i])
         self.collide_player()
 
     
@@ -113,9 +107,16 @@ class Game:
     def run(self):
         clock = pygame.time.Clock()
         while not self.stop_game:
+            self.stop_game = self.check_quit()
             clock.tick(FRAME_RATE)
             self.player.move()
             self.ball.move(self.screen)
             self.check_collision()
             self.draw()
-            self.stop_game = self.check_quit()
+        
+        text= self.font.render('Game Over', False, (255, 255, 255))
+        self.screen.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,(SCREEN_HEIGHT-text.get_rect().height)/2))
+        pygame.display.flip()
+
+        while not self.check_quit():
+            pass
