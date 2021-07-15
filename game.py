@@ -28,22 +28,25 @@ class Game:
             for columns in range(BRICK_COLUMNS):
                 self.bricks.append(Brick(columns*(BRICK_WIDTH + BRICK_GAP), BRICK_TOP_VOID+row*(BRICK_HEIGHT+BRICK_GAP)))
 
+    def bounce_on_rect(self, rect):
+        overlap = self.ball.rectangle.clip(rect)
+        if overlap.top == rect.top or overlap.bottom == rect.bottom:
+            self.ball.bounce("Horizontal")
+        if overlap.left == rect.left or overlap.right == rect.right:
+            self.ball.bounce("Vertical")
+
     def collide_list_of_bricks(self):
         indices = []
         for i, brick in enumerate(self.bricks):
             if self.ball.rectangle.colliderect(brick.rectangle):
                 indices.append(i)
-                overlap = self.ball.rectangle.clip(brick.rectangle)
-                if overlap.top == brick.rectangle.top or overlap.bottom == brick.rectangle.bottom:
-                    self.ball.bounce("Horizontal")
-                if overlap.left == brick.rectangle.left or overlap.right == brick.rectangle.right:
-                    self.ball.bounce("Vertical")
+                self.bounce_on_rect(brick.rectangle)
         return indices
     
     def collide_player(self):
         if self.ball.rectangle.colliderect(self.player.rectangle):
-            #TODO bounce
-            ...
+            self.bounce_on_rect(self.player.rectangle)
+            
 
     def collide_screen(self):
         rep = False
@@ -58,7 +61,7 @@ class Game:
             pygame.time.wait(TIME_BEFORE_RELAUNCH)
             self.player.life -= 1
             if self.player.life == 0:
-                end_game()
+                self.end_game()
                 return
             self.ball = Ball()
             rep = False
