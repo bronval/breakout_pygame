@@ -15,6 +15,7 @@ from brick import Brick
 
 class Game:
 
+
     def __init__(self):
         self.stop_game = False
 
@@ -28,12 +29,14 @@ class Game:
             for columns in range(BRICK_COLUMNS):
                 self.bricks.append(Brick(columns*(BRICK_WIDTH + BRICK_GAP), BRICK_TOP_VOID+row*(BRICK_HEIGHT+BRICK_GAP)))
 
+
     def bounce_on_rect(self, rect):
         overlap = self.ball.rectangle.clip(rect)
         if overlap.top == rect.top or overlap.bottom == rect.bottom:
             self.ball.bounce("horizontal")
         if overlap.left == rect.left or overlap.right == rect.right:
             self.ball.bounce("vertical")
+
 
     def collide_list_of_bricks(self):
         indices = []
@@ -44,6 +47,7 @@ class Game:
                 self.ball.move_back()
         return indices
     
+
     def collide_player(self):
         if self.ball.rectangle.colliderect(self.player.rectangle):
             self.bounce_on_rect(self.player.rectangle)
@@ -66,12 +70,14 @@ class Game:
                 return
             self.ball = Ball()
 
+
     def end_game(self):
         pygame.font.init()
         font = pygame.font.SysFont(pygame.font.get_default_font(), FONT_SIZE)
         text= font.render('Game Over', False, (255, 255, 255))
         self.screen.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,PLAYER_GAP))
         self.stop_game = True
+
 
     def check_collision(self):
         self.collide_screen()
@@ -89,6 +95,7 @@ class Game:
         self.player.draw(self.screen)
         pygame.display.flip()
 
+
     def check_quit(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -98,12 +105,13 @@ class Game:
                     return True
         return False
 
+
     def run(self):
         clock = pygame.time.Clock()
         while not self.stop_game:
             clock.tick(FRAME_RATE)
             self.player.move()
-            self.ball.move()
+            self.ball.move(self.screen)
             self.check_collision()
             self.draw()
             self.stop_game = self.check_quit()
