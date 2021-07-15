@@ -7,11 +7,15 @@
 # Authors : Bastien Wiaux and Benoit Ronval
 #
 #####################################################
+
+
 import pygame
 from constants import *
 from player import Player
 from ball import Ball
 from brick import Brick
+import sound
+
 from math import pi
 
 class Game:
@@ -49,6 +53,7 @@ class Game:
                 indices.append(i)
                 self.bounce_on_rect(brick.rectangle)
                 self.ball.move_back()
+                sound.brick()
         return indices
     
 
@@ -58,6 +63,7 @@ class Game:
             angle = - pi / 2 + (delta / (self.player.rectangle.width/2) * pi / 3)
             self.ball.change_angle(angle)
             self.ball.move_back()
+            sound.touch()
             
 
     def collide_screen(self):
@@ -69,6 +75,7 @@ class Game:
             self.ball.bounce("horizontal")
             self.ball.move_back()
         if self.ball.rectangle.top >= bounds.bottom:
+            sound.death()
             pygame.time.wait(TIME_BEFORE_RELAUNCH)
             self.player.life -= 1
             if self.player.life <= 0:
