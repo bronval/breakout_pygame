@@ -7,3 +7,8 @@
 # Authors : Bastien Wiaux and Benoit Ronval
 #
 #####################################################
+
+class Player:
+
+    def __init__(self):
+        pass
