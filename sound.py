@@ -34,5 +34,5 @@ def brick():
     pygame.mixer.Sound.play(brick_sound)
 
 def victory():
-    pygame.mixer.Sounf.play(victory_sound)
+    pygame.mixer.Sound.play(victory_sound)
 
