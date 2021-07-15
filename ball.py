@@ -44,14 +44,12 @@ class Ball:
             self.angle = math.pi - self.angle
         else:
             print("Not a valid bounce. Either horizontal or vertical")
-        print(self.angle)
 
     def move(self, window):
         self.save_pos = (self.center_x, self.center_y)
         self.center_x = math.cos(self.angle) * self.velocity + self.center_x
         self.center_y = math.sin(self.angle) * self.velocity + self.center_y
         self.rectangle = pygame.draw.circle(window, self.color, (self.center_x, self.center_y), self.radius)
-        print(self.save_pos, self.center_x, self.center_y)
 
     
     def move_back(self):

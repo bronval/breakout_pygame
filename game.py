@@ -12,6 +12,7 @@ from constants import *
 from player import Player
 from ball import Ball
 from brick import Brick
+from math import pi
 
 class Game:
 
@@ -28,6 +29,9 @@ class Game:
         for row in range(BRICK_ROWS):
             for columns in range(BRICK_COLUMNS):
                 self.bricks.append(Brick(columns*(BRICK_WIDTH + BRICK_GAP), BRICK_TOP_VOID+row*(BRICK_HEIGHT+BRICK_GAP)))
+                
+        pygame.font.init()
+        self.font = pygame.font.SysFont(pygame.font.get_default_font(), FONT_SIZE)
 
 
     def bounce_on_rect(self, rect):
@@ -50,7 +54,9 @@ class Game:
 
     def collide_player(self):
         if self.ball.rectangle.colliderect(self.player.rectangle):
-            self.bounce_on_rect(self.player.rectangle)
+            delta = self.ball.center_x - self.player.rectangle.midtop[0]
+            angle = - pi / 2 + (delta / (self.player.rectangle.width/2) * pi / 3)
+            self.ball.change_angle(angle)
             self.ball.move_back()
             
 
@@ -72,9 +78,7 @@ class Game:
 
 
     def end_game(self):
-        pygame.font.init()
-        font = pygame.font.SysFont(pygame.font.get_default_font(), FONT_SIZE)
-        text= font.render('Game Over', False, (255, 255, 255))
+        text= self.font.render('Game Over', False, (255, 255, 255))
         self.screen.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,PLAYER_GAP))
         self.stop_game = True
 
