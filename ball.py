@@ -8,7 +8,45 @@
 #
 #####################################################
 
+
+from constants import *
+import math
+import pygame
+
+
 class Ball:
 
+
     def __init__(self):
-        pass
+        self.radius = BALL_RADIUS
+        self.center_x = BALL_START_X
+        self.center_y = BALL_START_Y
+        self.velocity = BALL_SPEED
+        self.angle = math.pi / 2
+        self.rectangle = pygame.Rect(self.center_x - self.radius, self.center_y - self.radius, 2 * self.radius, 2 * self.radius)
+        self.color = "white"
+        self.save_pos = (self.center_x, self.center_y)
+
+
+    def draw(self, window):
+        self.rectangle = pygame.draw.circle(window, self.color, (self.center_x, self.center_y), self.radius)
+
+
+    def change_angle(self, new_angle):
+        self.angle = new_angle
+
+
+    def bounce(self, orientation):
+        if orientation == "horizontal":
+            self.angle *= -1
+        elif orientation == "vertical":
+            self.angle = math.pi - self.angle
+        else:
+            print("Not a valid bounce. Either horizontal or vertical")
+
+
+    def move(self):
+        self.save_pos = (self.center_x, self.center_y)
+        self.center_x = math.cos(self.angle) * self.velocity + self.center_x
+        self.center_y = math.sin(self.angle) * self.velocity + self.center_y
+

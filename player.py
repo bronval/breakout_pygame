@@ -24,6 +24,7 @@ class Player:
         self.rectangle = pygame.Rect(PLAYER_START_X, PLAYER_START_Y, PLAYER_WIDTH, PLAYER_HEIGHT)
         self.color = "white"
         self.save_pos = PLAYER_START_X
+        self.life = PLAYER_LIFE
 
     
     def draw(self, window):
