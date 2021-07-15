@@ -14,6 +14,7 @@
 SCREEN_WIDTH = 720
 SCREEN_HEIGHT = 480
 FRAME_RATE = 60
+FONT_SIZE = 30
 
 
 # constants for player
@@ -29,6 +30,7 @@ PLAYER_START_Y = SCREEN_HEIGHT - PLAYER_GAP - PLAYER_WIDTH
 # constants for ball
 
 BALL_RADIUS = 10
+TIME_BEFORE_RELAUNCH = 500 #[ms]
 
 
 # constants for bricks

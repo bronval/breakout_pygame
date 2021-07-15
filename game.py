@@ -33,7 +33,11 @@ class Game:
         for i, brick in enumerate(self.bricks):
             if self.ball.rectangle.colliderect(brick.rectangle):
                 indices.append(i)
-                #TODO bounce
+                overlap = self.ball.rectangle.clip(brick.rectangle)
+                if overlap.top == brick.rectangle.top or overlap.bottom == brick.rectangle.bottom:
+                    self.ball.bounce("Horizontal")
+                if overlap.left == brick.rectangle.left or overlap.right == brick.rectangle.right:
+                    self.ball.bounce("Vertical")
         return indices
     
     def collide_player(self):
@@ -47,10 +51,25 @@ class Game:
         if self.ball.rectangle.left < bounds.left or self.ball.rectangle.right > bounds.right:
             self.ball.bounce("Vertical")
             rep = True
-        if self.ball.rectangle.top < bounds.top or self.ball.rectangle.bottom > bounds.bottom: #TODO ball must die if go underneath
+        if self.ball.rectangle.top < bounds.top:
             self.ball.bounce("Horizontal")
             rep = True
+        if self.ball.rectangle.bottom > bounds.bottom:
+            pygame.time.wait(TIME_BEFORE_RELAUNCH)
+            self.player.life -= 1
+            if self.player.life == 0:
+                end_game()
+                return
+            self.ball = Ball()
+            rep = False
         return rep
+
+    def end_game(self):
+        pygame.font.init()
+        font = pygame.font.SysFont(pygame.font.get_default_font(), FONT_SIZE)
+        text= self.font.render(f'Game Over', False, (255, 255, 255))
+        self.surface.blit(text,((SCREEN_WIDTH-text.get_rect().width)/2,PLAYER_GAP))
+        self.stop_game = True
 
     def check_collision(self):
         had_collision = False
