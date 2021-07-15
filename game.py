@@ -48,11 +48,6 @@ class Game:
         if overlap.width <= overlap.height:
             self.ball.bounce("vertical")
 
-        # if overlap.top == rect.top or overlap.bottom == rect.bottom:
-        #     self.ball.bounce("horizontal")
-        # if overlap.left == rect.left or overlap.right == rect.right:
-        #     self.ball.bounce("vertical")
-
 
     def collide_list_of_bricks(self):
         indices = []
