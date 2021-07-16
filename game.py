@@ -22,6 +22,9 @@ class Game:
 
 
     def __init__(self):
+        """
+        Cree un objet Game pour faire tourner tout le jeu
+        """
         self.stop_game = False
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -41,6 +44,9 @@ class Game:
 
 
     def bounce_on_rect(self, rect):
+        """
+        Fait rebondir la balle sur un rectangle (player ou brick)
+        """
         overlap = self.ball.rectangle.clip(rect)
 
         if overlap.width >= overlap.height:
@@ -50,6 +56,9 @@ class Game:
 
 
     def collide_list_of_bricks(self):
+        """
+        Permet de recuperer les index des brick qui touchent la balle (pour les collisions)
+        """
         indices = []
         for i, brick in enumerate(self.bricks):
             if self.ball.rectangle.colliderect(brick.rectangle):
@@ -61,6 +70,9 @@ class Game:
     
 
     def collide_player(self):
+        """
+        Fait rebondir la balle sur le player
+        """
         if self.ball.rectangle.colliderect(self.player.rectangle):
             delta = self.ball.center_x - self.player.rectangle.midtop[0]
             angle = - pi / 2 + (delta / (self.player.rectangle.width/2) * pi / 3)
@@ -70,6 +82,9 @@ class Game:
             
 
     def collide_screen(self):
+        """
+        Permet de gérer le rebond de la balle sur les bords de l'ecran
+        """
         bounds = self.screen.get_rect()
         if self.ball.rectangle.left <= bounds.left or self.ball.rectangle.right >= bounds.right:
             self.ball.bounce("vertical")
@@ -88,6 +103,9 @@ class Game:
 
 
     def check_collision(self):
+        """
+        Verifie l'ensemble des collisions de la balle avec les elements du jeu (brick, mur, player)
+        """
         self.collide_screen()
         indices = self.collide_list_of_bricks()
         for i, idx in enumerate(indices):
@@ -101,6 +119,9 @@ class Game:
 
     
     def draw(self):
+        """
+        Affiche tous les elements du jeu sur l'ecran (brick, player, balle)
+        """
         pygame.draw.rect(self.screen, "black", self.bkg)
         for brick in self.bricks:
             brick.draw(self.screen)
@@ -110,6 +131,9 @@ class Game:
 
 
     def check_quit(self):
+        """
+        Pour quitter le jeu
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
@@ -120,6 +144,9 @@ class Game:
 
 
     def run(self):
+        """
+        Main loop, fait tourner le jeu
+        """
         clock = pygame.time.Clock()
         while not self.stop_game:
             self.stop_game = self.check_quit()
