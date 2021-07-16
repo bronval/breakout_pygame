@@ -13,17 +13,20 @@ import pygame
 
 
 pygame.init()
+
+# Charge les differents fichiers audio
 death_sound = pygame.mixer.Sound("death_sound.mp3")
 touch_ball = pygame.mixer.Sound("player_sound.mp3")
 brick_sound = pygame.mixer.Sound("brick_sound.mp3")
 victory_sound = pygame.mixer.Sound("victory.mp3")
 
+# Diminue le volume
 pygame.mixer.Sound.set_volume(death_sound, 0.7)
 pygame.mixer.Sound.set_volume(touch_ball, 0.7)
 pygame.mixer.Sound.set_volume(brick_sound, 0.7)
 pygame.mixer.Sound.set_volume(victory_sound, 0.7)
 
-
+# Pour jouer les effets sonores
 def touch():
     pygame.mixer.Sound.play(touch_ball)
 

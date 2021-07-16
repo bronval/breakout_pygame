@@ -35,7 +35,10 @@ class Ball:
         """
         Dessine la balle sur la window et update l'attribut rectangle
         """
+        # sauvegarde rectangle pour les collisions
         self.rectangle = pygame.draw.circle(window, self.color, (self.center_x, self.center_y), self.radius)
+
+        # pour afficher la hitbox de la balle
         # pygame.draw.rect(window, "red", (self.rectangle.x, self.rectangle.y, self.rectangle.width, self.rectangle.height), 2)
 
 
@@ -51,8 +54,10 @@ class Ball:
         Permet de faire rebondir la balle en changeant l'angle
         """
         if orientation == "horizontal":
+            # rebond sur une surface horizontale
             self.angle *= -1
         elif orientation == "vertical":
+            # rebond sur une surface verticale
             self.angle = math.pi - self.angle
         else:
             print("Not a valid bounce. Either horizontal or vertical")
@@ -62,10 +67,10 @@ class Ball:
         """
         Bouge les positions de la balle et update l'attribut rectangle
         """
-        self.save_pos = (self.center_x, self.center_y)
+        self.save_pos = (self.center_x, self.center_y)    # sauvegarde la position avant de bouger
         self.center_x = math.cos(self.angle) * self.velocity + self.center_x
         self.center_y = math.sin(self.angle) * self.velocity + self.center_y
-        self.rectangle = pygame.draw.circle(window, self.color, (self.center_x, self.center_y), self.radius)
+        self.rectangle = pygame.draw.circle(window, self.color, (self.center_x, self.center_y), self.radius)    # update le rectangle
 
     
     def move_back(self):
